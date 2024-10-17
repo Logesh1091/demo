@@ -3,17 +3,31 @@ version: 0.2
 phases:
   install:
     commands:
-      - echo Installing NGINX
+      # Update the package list
+      - echo "Running apt-get update"
       - sudo apt-get update
-      - sudo apt-get install nginx -y
+
+      # Optional: Fix broken dependencies (useful if update is failing)
+      - sudo apt-get install -f
+
+      # Install necessary packages (e.g., git, curl)
+      - sudo apt-get install -y git curl
+
+  pre_build:
+    commands:
+      - echo "Pre-build phase"
+
   build:
     commands:
-      - echo Build started on `date`
-      - cp index.html /var/www/html/
+      - echo "Build phase"
+
   post_build:
     commands:
-      - echo Configuring NGINX
+      - echo "Post-build phase"
+      # Optional: Clean up to free space
+      - sudo apt-get clean
 
 artifacts:
   files:
     - '**/*'
+
